@@ -1,0 +1,22 @@
+package com.jin.var;
+
+public class Varriable_03 {
+
+	public static void main(String[] args) {
+		
+		int intNum1 = 0;
+		intNum1 = 30;
+		intNum1 = 40;
+		intNum1 = 50;
+		intNum1 = 0;
+		
+		System.out.println(intNum1);
+		
+		
+	}
+	
+	
+	
+	
+	
+}
