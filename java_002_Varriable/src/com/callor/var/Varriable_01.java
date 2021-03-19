@@ -33,3 +33,5 @@ public class Varriable_01 {
 		System.out.printf("%d * %d = %d", num1, num2, times);
 		System.out.printf("%d / %d = %d", num2, num1, div);
 		System.out.println("=====================");
+
+	}

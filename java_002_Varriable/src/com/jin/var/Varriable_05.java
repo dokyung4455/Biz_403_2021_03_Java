@@ -6,6 +6,9 @@ public class Varriable_05 {
 		
 		System.out.println();
 		
+		int intSum = 0;
+		int intNum = 0;
+		
 		intSum += intNum; //1
 		
 		intNum ++; //2

@@ -72,7 +72,7 @@ public class Varriable_03 {
 		intNum1 --;
 		
 		++ intNum1;
-		-- intnum;
+		-- intNum1;
 		
 					
 				
