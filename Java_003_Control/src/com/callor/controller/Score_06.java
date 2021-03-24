@@ -14,6 +14,8 @@ public class Score_06 {
 		
 		if(floatAvg >= 95) {
 			System.out.println("장원입니다");
+			
+			// 95 > ?? >= 90
 		} else if(floatAvg >= 90) {
 			System.out.println("차석입니다");
 		} else if(floatAvg >= 80) {
@@ -23,6 +25,7 @@ public class Score_06 {
 		} else {
 			System.out.println("낙방입니다");
 		}
+		
 		
 				
 	}
