@@ -32,6 +32,7 @@ public class App_10 {
 		// 2	3
 		// 3	4
 		// 4	5
+		// 배열의 오름차순 정렬 코드
 		for(int i = 0 ; i < intNums.length ; i++) {
 			for(int j = i + 1; j < intNums.length ; j++) {
 				if(intNums[i] > intNums[j]) {

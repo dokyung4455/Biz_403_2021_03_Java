@@ -1,6 +1,6 @@
 package com.callor.apps;
 
-public class App_06A {
+public class Pay_01A {
 	
 	public static void main(String[] args) {
 		
