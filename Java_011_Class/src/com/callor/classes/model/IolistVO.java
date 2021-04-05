@@ -15,7 +15,7 @@ public class IolistVO {
 	private String inout;
 	private Integer qty;
 	private Integer iprice;
-	private Integer oprice;
+	private Integer oprice; 
 
 	public String getPname() {
 		return pname;
