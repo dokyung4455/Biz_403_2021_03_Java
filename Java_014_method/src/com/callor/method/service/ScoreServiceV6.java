@@ -41,9 +41,9 @@ public class ScoreServiceV6 {
 			}
 			ScoreVO scoreVO = new ScoreVO();
 			int sbIndex = 0;
-			scoreVO.setKor(scores[국어]);
-			scoreVO.setEng(scores[영어]);
-			scoreVO.setMath(scores[수학]);
+			scoreVO.setKor(scores[국어]);//0
+			scoreVO.setEng(scores[영어]);//1
+			scoreVO.setMath(scores[수학]);//2
 			scoreList.add(scoreVO);
 
 		}
