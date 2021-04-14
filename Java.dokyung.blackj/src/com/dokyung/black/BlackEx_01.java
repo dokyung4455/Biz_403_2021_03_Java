@@ -8,7 +8,7 @@ public class BlackEx_01 {
 		
 		BlackServiceV1 bsV1 = new BlackServiceV1();
 		
-		bsV1.cardDraw();
+		bsV1.blackMain();
 	}
 
 }

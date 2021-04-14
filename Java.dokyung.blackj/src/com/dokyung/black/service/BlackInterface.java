@@ -2,12 +2,12 @@ package com.dokyung.black.service;
 
 public interface BlackInterface {
 	
-	public void selectMenu();
+	//public void selectMenu();
 	public void blackMain();
-	public void unOver();
-	public void score();
-	public void winLose();
-	public void cardDraw();
+	public Integer unOver();
+	public void score(int num1, int num2);
+	public String winLose();
+	public Integer cardDraw();
 	
 	
 	
