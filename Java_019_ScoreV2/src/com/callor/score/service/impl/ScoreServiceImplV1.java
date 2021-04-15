@@ -97,12 +97,9 @@ public class ScoreServiceImplV1 implements ScoreService {
 			if(yesNo.equals("no")) {
 				continue;
 			}
-			
-			
-			
-			
 
-
+			
+			
 			for (int i = 0; i < subject.length; i++) {
 				int score = iService.inputValue(subject[i], 0, 100);
 				student[i] = score;
@@ -144,11 +141,20 @@ public class ScoreServiceImplV1 implements ScoreService {
 
 	@Override
 	public void printStudent() {
-		System.out.println("학번\t국어\t영어\t수학\t총점\t평균");
+		
+		System.out.println("학번\t이름\t학과\t학년\t주소\t\t\t국어\t영어\t수학\t총점\t평균");
 		for(ScoreVO vo : scoreList) {
-			System.out.printf("%s\t%d\t%d\t%d\t%d\t%3.2f\n",vo.getNum(),vo.getKor(),vo.getEng(),vo.getMath(),vo.getTotal(),vo.getAvg());
+			StudentVO stVO = stService.getStudent(vo.getNum());
+			
+			System.out.printf("%s\t%s\t%s\t%s\t%s\t%d\t%d\t%d\t%d\t%3.2f\n"
+					,vo.getNum(),stVO.getName(),stVO.getDept(),stVO.getGrade(),stVO.getAddress(),vo.getKor(),vo.getEng(),vo.getMath(),vo.getTotal(),vo.getAvg());
 		}
 
+	}
+
+	@Override
+	public void printScore() {
+		
 	}
 
 }

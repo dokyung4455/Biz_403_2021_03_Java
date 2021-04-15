@@ -7,6 +7,8 @@ public interface ScoreService {
 	public void loadScore();
 
 	public void printStudent();
+	
+	public void printScore();
 
 	public class ScoreVO {
 		
