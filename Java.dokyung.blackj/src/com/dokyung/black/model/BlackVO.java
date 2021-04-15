@@ -2,9 +2,9 @@ package com.dokyung.black.model;
 
 public class BlackVO {
 	
-	private Integer dealerScore;
+	private Integer dealerScore = 0;
 	private String dealerCard;
-	private Integer playerScore;
+	private Integer playerScore = 0;
 	private String playerCard;
 	
 	public Integer getDealerScore() {
