@@ -2,9 +2,9 @@ package com.dokyung.black.model;
 
 public class BlackVO {
 	
-	private Integer dealerScore = 0;
+	private Integer dealerScore;
 	private String dealerCard;
-	private Integer playerScore = 0;
+	private Integer playerScore;
 	private String playerCard;
 	
 	public Integer getDealerScore() {
@@ -31,5 +31,11 @@ public class BlackVO {
 	public void setPlayerCard(String playerCard) {
 		this.playerCard = playerCard;
 	}
+	@Override
+	public String toString() {
+		return "BlackVO [dealerScore=" + dealerScore + ", dealerCard=" + dealerCard + ", playerScore=" + playerScore
+				+ ", playerCard=" + playerCard + "]";
+	}
+	
 
 }

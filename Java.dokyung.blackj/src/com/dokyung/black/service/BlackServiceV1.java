@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 import com.dokyung.black.model.BlackVO;
 
@@ -13,8 +14,10 @@ public class BlackServiceV1 implements BlackInterface {
 	protected String[] pattern;
 	protected String[] number;
 	protected Random rnd;
-	protected List<BlackVO> cardList;
-	protected List<BlackVO> scoreList;
+	protected List<BlackVO> cardDList;
+	protected List<BlackVO> cardPList;
+	protected List<BlackVO> scoreDList;
+	protected List<BlackVO> scorePList;
 	protected Scanner scan;
 	protected final int 플레이어 = 1;
 	protected final int 딜러 = 2;
@@ -23,8 +26,10 @@ public class BlackServiceV1 implements BlackInterface {
 		rnd = new Random();
 		dealer = null;
 		player = null;
-		cardList = new LinkedList<BlackVO>();
-		scoreList = new LinkedList<BlackVO>();
+		cardDList = new LinkedList<BlackVO>();
+		scoreDList = new LinkedList<BlackVO>();
+		cardPList = new LinkedList<BlackVO>();
+		scorePList = new LinkedList<BlackVO>();
 		pattern = new String[] { "스페이드[♠]", "하트[♥]", "다이아몬드[◆]", "클럽[♣]" };
 		number = new String[] { "[A]", "[2]", "[3]", "[4]", "[5]", "[6]", "[7]", "[8]", "[9]", "[10]", "[K]", "[Q]",
 				"[J]" };
@@ -46,70 +51,71 @@ public class BlackServiceV1 implements BlackInterface {
 		System.out.println("Black Jack 게임을 시작합니다.");
 		System.out.println("=".repeat(60));
 
-		//for (int i = 0; i < 2; i++) { // 딜러 카드 지급
-			//System.out.println((i + 1) + "번째 카드를 뽑습니다.");
-			turn = this.cardDraw(딜러);
+		// 
+		
+		for (int i = 0; i < 2; i++) { // 딜러 카드 지급
+			turn = this.cardDDraw();
 			this.score(turn, 딜러);
-			turn = this.cardDraw(딜러);
-			this.score(turn, 딜러);
-		//}
-		System.out.println("-".repeat(60));
-		System.out.println("딜러가 카드를 받았습니다.");
-		System.out.println("-".repeat(60));
-		//for (int i = 0; i < 2; i++) { // 플레이어 카드 지급
-			//System.out.println((i + 1) + "번째 카드를 뽑습니다.");
-			turn = this.cardDraw(플레이어);
+			turn = this.cardPDraw();
 			this.score(turn, 플레이어);
-		//}
-		System.out.println("-".repeat(60));
+		}
+		System.out.println(scoreDList.toString());
+		System.out.println(scorePList.toString());
+		System.out.println("딜러가 카드를 받았습니다.");
+		try {
+			TimeUnit.SECONDS.sleep(1);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		System.out.println("-".repeat(60));
+//		for (int i = 0; i < 2; i++) { // 플레이어 카드 지급
+//			System.out.println((i + 1) + "번째 카드를 뽑습니다.");
+//			
+//		}
 		System.out.println("당신이 카드를 받았습니다.");
+		try {
+			TimeUnit.SECONDS.sleep(1);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println("=".repeat(60));
 		System.out.println("현재 당신이 가진 카드는");
-		System.out.println("=".repeat(60));
-		for (int j = 0; j < cardList.size(); j++) { // 플레이어 카드 체크
-			BlackVO vo = cardList.get(j);
-			//if (vo.getPlayerCard() != null) {
-				System.out.println(vo.getPlayerCard());
-			//}
+		System.out.println("-".repeat(60));
+		for (int j = 0; j < cardPList.size(); j++) { // 플레이어 카드 체크
+			BlackVO vo = cardPList.get(j);
+			System.out.println(vo.getPlayerCard());
 		}
 
 		Integer rule1 = 0;
 		Integer rule2 = 0;
 		while (true) {
 			rule1 = this.goStay();
-			if (rule1==1) {
+			if (rule1 == 1) {
 				System.out.println("카드를 한장 더 받습니다.");
-				int num = this.cardDraw(플레이어);
+				int num = this.cardPDraw();
 				this.score(num, 플레이어);
 				System.out.println("현재 당신이 가진 카드는");
-				for (int j = 0; j < cardList.size(); j++) { // 보유카드 출력
-					BlackVO vo = cardList.get(j);
-					//if (vo.getPlayerCard() != null) { // 카드안에 null값은 출력안함
-						System.out.println(vo.getPlayerCard());
-						System.out.println(vo.getPlayerScore());
-					//}
-				}
-				rule2 = this.unOver(1); // 21 이상 규칙 체크
-					break;
-				} else if (rule1 == null) {
-					return;
+				for (int j = 0; j < cardPList.size(); j++) { // 보유카드 출력
+					BlackVO vo = cardPList.get(j);
+					System.out.println(vo.getPlayerCard().toString());
+					//System.out.println(vo.getPlayerScore().toString());
 				}
 			}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-			if (rule2 == null) { // 플레이어 패배
-				return;
-			}
-			if (rule2 == 1) { // 게임 계속 진행
+			rule2 = this.unOver(1); // 21 이상 규칙 체크
+			break;
+		}
+		if (rule1 == null) {
+			return;
+		}
 
-			}
+		if (rule2 == null) { // 플레이어 패배
+			return;
+		}
+		if (rule2 == 1) { // 게임 계속 진행
+
+		}
 
 	}
 
@@ -139,16 +145,16 @@ public class BlackServiceV1 implements BlackInterface {
 	public Integer unOver(int num4) {
 		int sum = 0;
 		if (num4 == 플레이어) {
-			for (int i = 0; i < scoreList.size(); i++) {
-				BlackVO vo = scoreList.get(i);
+			for (int i = 0; i < scorePList.size(); i++) {
+				BlackVO vo1 = scorePList.get(i);
 			}
 			if (sum > 21) {
 				System.out.println("PLAYER LOSE");
 				return null;
 			}
 		} else if (num4 == 딜러) {
-			for (int i = 0; i < scoreList.size(); i++) {
-				BlackVO vo = scoreList.get(i);
+			for (int i = 0; i < scoreDList.size(); i++) {
+				BlackVO vo2 = scoreDList.get(i);
 			}
 			if (sum > 21) {
 				System.out.println("DEALER LOSE");
@@ -175,25 +181,24 @@ public class BlackServiceV1 implements BlackInterface {
 		} else {
 			score = num1 + 1;
 		}
-		BlackVO vo = new BlackVO();
+		scores[0] = score;
+		scores[1] = score;
 		if (num2 == 1) { // 플레이어 점수
-			scores[0] = score;
+			BlackVO vo = new BlackVO();
 			vo.setPlayerScore(scores[0]);
-
+			scorePList.add(vo);
 		} else if (num2 == 2) { // 딜러 점수
-			scores[1] = score;
+			BlackVO vo = new BlackVO();
 			vo.setDealerScore(scores[1]);
-
+			scoreDList.add(vo);
 		}
-		
-		
-		scoreList.add(vo);
 
+//System.out.println(scorePList.toString());
 		return;
 	}
 
 	@Override
-	public Integer cardDraw(int num3) {
+	public Integer cardDDraw() {
 		while (true) {
 			int pat = rnd.nextInt(4);
 			int num = rnd.nextInt(13);
@@ -204,38 +209,56 @@ public class BlackServiceV1 implements BlackInterface {
 			String Card1 = str1 + str2;
 
 			boolean flag = false;
-			BlackVO vo = null;
-			if (num3 == 2) {
-				for (int i = 0; i < cardList.size(); i++) {
-					 vo = cardList.get(i);
-					String Card2 = vo.getDealerCard() + vo.getPlayerCard();
-					if (Card1 == Card2) {
-						flag = true;
-					}
-				} // dealer for end
-				if (flag == true) {
-					continue;
-				}
-				vo = new BlackVO();
-				vo.setDealerCard(Card1);
-			} else if (num3 == 1) {
-				for (int i = 0; i < cardList.size(); i++) {
-					vo = cardList.get(i);
-					String Card2 = vo.getDealerCard() + vo.getPlayerCard();
-					if (Card1 == Card2) {
-						flag = true;
-					}
-				} // player for end
-				if (flag == true) {
-					continue;
-				}
-				vo = new BlackVO();
-				vo.setPlayerCard(Card1);
-				
-			} // else if end
-			cardList.add(vo);
-			return num;
-		} // while end
 
+			for (int i = 0; i < cardDList.size(); i++) {
+				BlackVO vo = cardDList.get(i);
+				String Card2 = vo.getDealerCard() + vo.getPlayerCard();
+				if (Card1 == Card2) {
+					flag = true;
+				}
+			} // dealer for end
+			if (flag == true) {
+				continue;
+			}
+			System.out.println(Card1);
+			BlackVO vo = new BlackVO();
+			vo.setDealerCard(Card1);
+			cardDList.add(vo);
+
+			return num;
+		}
 	}
+
+	@Override
+	public Integer cardPDraw() {
+		while (true) {
+			int pat = rnd.nextInt(4);
+			int num = rnd.nextInt(13);
+
+			String str1 = pattern[pat];
+			String str2 = number[num];
+
+			String Card1 = str1 + str2;
+
+			boolean flag = false;
+
+			for (int i = 0; i < cardPList.size(); i++) {
+				BlackVO vo = cardPList.get(i);
+				String Card2 = vo.getDealerCard() + vo.getPlayerCard();
+				if (Card1 == Card2) {
+					flag = true;
+				}
+			} // player for end
+			if (flag == true) {
+				continue;
+			}
+			System.out.println(Card1);
+			BlackVO vo = new BlackVO();
+			vo.setPlayerCard(Card1);
+			cardPList.add(vo);
+			return num;
+		}
+
+	} // while end
+
 }

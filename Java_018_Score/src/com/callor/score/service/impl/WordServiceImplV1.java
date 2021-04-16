@@ -131,7 +131,7 @@ public class WordServiceImplV1 implements WordService{
 			System.out.print(">> ");
 			String strKor = scan.nextLine();
 
-			if(strKor.equals("qUIT")) {
+			if(strKor.equals("QUIT")) {
 				break;
 			}
 			

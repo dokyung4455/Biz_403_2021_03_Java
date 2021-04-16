@@ -8,7 +8,8 @@ public interface BlackInterface {
 	public Integer goStay();
 	public void score(int num1, int num2);
 	public String winLose();
-	public Integer cardDraw(int num3);
+	public Integer cardDDraw();
+	public Integer cardPDraw();
 	
 	
 	
