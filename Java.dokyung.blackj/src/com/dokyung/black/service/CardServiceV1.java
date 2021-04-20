@@ -21,7 +21,7 @@ public class CardServiceV1 implements CardInterface {
 
 	@Override
 	public void cardDraw() {
-		for (int j = 0; j < 53; j++) {
+		while (true) {
 			Random rnd = new Random();
 			Integer rule1 = rnd.nextInt(4);
 			Integer rule2 = rnd.nextInt(13);
@@ -32,13 +32,20 @@ public class CardServiceV1 implements CardInterface {
 			String card1 = str1 + str2;
 
 			boolean flag = true;
+			CardVO vo = null;
 			for (int i = 0; i < cardList.size(); i++) {
-				CardVO vo = cardList.get(i);
+				vo = cardList.get(i);
 				if (card1.equals(vo.getCardDeck())) {
 					flag = false;
 				}
 			}
 			if (flag == false) {
+				continue;
+			}
+			vo.setCardDeck(card1);
+			cardList.add(vo);
+			
+			if(cardList.size() == 53) {
 				return;
 			}
 		}
@@ -69,6 +76,7 @@ public class CardServiceV1 implements CardInterface {
 		System.out.println("BLACK JACK START");
 		System.out.println("=".repeat(50));
 		System.out.println("딜러와 플레이어에게 카드를 2장씩 Draw 합니다.");
+		this.cardDraw();
 
 	}
 
