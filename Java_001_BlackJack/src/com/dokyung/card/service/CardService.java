@@ -1,5 +1,6 @@
 package com.dokyung.card.service;
 
+import com.dokyung.card.model.BatVO;
 import com.dokyung.card.model.DealerVO;
 import com.dokyung.card.model.PlayerVO;
 
@@ -11,9 +12,10 @@ public void selectMenu();
 	public PlayerVO playCost(Integer cost);
 	public Integer goStay();
 	public void mainBoard();
-	public void dealerRule();
+	public boolean dealerRule();
 	public Integer unOver();
 	public void timeUnit(int second);
+	public BatVO batting(BatVO vo);
 	
 
 }

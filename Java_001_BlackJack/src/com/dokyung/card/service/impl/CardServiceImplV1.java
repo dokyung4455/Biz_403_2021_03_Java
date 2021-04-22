@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
+import com.dokyung.card.model.BatVO;
 import com.dokyung.card.model.DealerVO;
 import com.dokyung.card.model.PlayerVO;
 import com.dokyung.card.service.CardService;
@@ -21,18 +22,32 @@ public class CardServiceImplV1 implements CardService {
 	protected String blackCard;
 	protected List<DealerVO> dealerList;
 	protected List<PlayerVO> playerList;
+	protected List<BatVO> batList;
+	protected Integer coins;
+	protected Integer tableCoins;
+	protected BatVO vo;
 
 	public CardServiceImplV1() {
 		rnd = new Random();
 		scan = new Scanner(System.in);
-		
+		vo = new BatVO();
+
 		pattern = new String[] { "[♠] 스페이드 -", "[♥] 하트 -", "[◆] 다이아몬드 -", "[♣]클럽 -" };
 		number = new String[] { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "K", "Q", "J" };
 		blackCard = "";
+		coins = 0;
+		tableCoins = 0;
 	}
-	
+
 	@Override
 	public void mainBoard() { // 게임 진행 보드
+
+		Integer tCoin = 1000;
+		System.out.println("참가비 1000원을 지불했습니다.");
+		vo.setPlayerCoin(vo.getPlayerCoin() - tCoin);
+		vo.setOnCoin(tCoin + tableCoins);
+		System.out.println("현재 남은 소지금액 " + vo.getPlayerCoin() + "원 입니다.");
+
 		dealerList = new ArrayList<DealerVO>();
 		playerList = new ArrayList<PlayerVO>();
 		while (true) {
@@ -49,14 +64,16 @@ public class CardServiceImplV1 implements CardService {
 			}
 			System.out.println("카드 배분이 끝났습니다.");
 			this.timeUnit(1);
-
+			boolean flag1 = true;
 			while (true) {
 				System.out.println("현재 플레이어의 카드는");
 				Integer pCost = this.unOver(); // 현재가진 카드 출력 및 점수계산
 				if (pCost > 21) {
 					System.out.println("21점이 넘어 플레이어 패배!");
-					return;
+					flag1 = false;
+					break;
 				}
+				this.batting(vo);
 				int num = this.goStay(); // 고&스테이 선택
 				if (num == 1) {
 					continue;
@@ -64,8 +81,19 @@ public class CardServiceImplV1 implements CardService {
 					break;
 				}
 			} // while end
-			this.dealerRule();
-			
+			boolean winLose = false;
+			if (flag1 == true) {
+				winLose = this.dealerRule();
+			}
+			if (winLose == true) {
+				Integer winCoin = vo.getOnCoin();
+				vo.setPlayerCoin(winCoin * 2);
+				vo.setOnCoin(0);
+				System.out.println("현재 남은 소지금액 " + vo.getPlayerCoin() + "원 입니다.");
+				return;
+			}
+			System.out.println("현재 남은 소지금액 " + vo.getPlayerCoin() + "원 입니다.");
+
 //			System.out.println("다시하려면 다시하기/ 그만하시려면 종료를 입력하세요");
 //			String str = scan.nextLine();
 //			if (str.equals("다시하기")) {
@@ -116,8 +144,7 @@ public class CardServiceImplV1 implements CardService {
 
 		return num2;
 	}
-	
-	
+
 	@Override
 	public Integer unOver() {
 		Integer nScore = 0;
@@ -131,7 +158,6 @@ public class CardServiceImplV1 implements CardService {
 		return nScore;
 	}
 
-	
 	@Override
 	public Integer goStay() {
 		System.out.println("카드를 한장더 받으시려면 1번, 그만 받으시려면 2번을 입력하세요.");
@@ -155,26 +181,28 @@ public class CardServiceImplV1 implements CardService {
 
 	@Override
 	public void selectMenu() {
-		
-		while(true) {
-		System.out.println("1. 게임시작");
-		System.out.println("2. 도움말");
-		System.out.println("QUIT. 종료");
-		String selectMenu = scan.nextLine();
-		if(selectMenu.equals("1")) {
-			this.mainBoard();
+
+		while (true) {
+			System.out.println("1. 새로하기");
+			System.out.println("2. 이어하기");
+			System.out.println("QUIT. 종료");
+			String selectMenu = scan.nextLine();
+			if (selectMenu.equals("1")) {
+				System.out.println("코인 10만원을 지급합니다.");
+				vo = new BatVO();
+				this.mainBoard();
+			} else if (selectMenu.equals("2")) {
+				this.mainBoard();
+			}
+			if (selectMenu.equals("QUIT")) {
+				return;
+			}
 		}
-		if(selectMenu.equals("QUIT")) {
-			return;
-		}
-		}
-		
 
 	}
 
-	
 	@Override
-	public void dealerRule() {
+	public boolean dealerRule() {
 		Integer dScore = 0;
 		while (true) {
 			dScore = 0;
@@ -195,22 +223,22 @@ public class CardServiceImplV1 implements CardService {
 			} else if (dScore > 21) {
 				System.out.println("딜러의 카드점수가 21점을 초과했습니다.");
 				System.out.println("PLAYER WIN!");
-				return;
+				return true;
 			}
 			break;
 		}
 		System.out.println("플레이어의 보유카드와 점수는");
 		Integer pScore = this.unOver();
-		if (pScore > dScore) {
+		if (pScore >= dScore) {
 			System.out.println("PLAYER WIN!");
-		} else if (dScore > pScore) {
+			return true;
+		} else {
 			System.out.println("PLAYER LOSE .. ");
+			return false;
 		}
-		return;
 
 	}
 
-	
 	@Override
 	public DealerVO dealCost(Integer cost) {
 		Integer score = 0;
@@ -228,7 +256,6 @@ public class CardServiceImplV1 implements CardService {
 		return vo;
 	}
 
-	
 	@Override
 	public PlayerVO playCost(Integer cost) {
 		Integer score = 0;
@@ -254,7 +281,32 @@ public class CardServiceImplV1 implements CardService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
+	}
+
+	@Override
+	public BatVO batting(BatVO vo) {
+		System.out.println("배팅을 시작합니다.");
+		Integer pCoin = vo.getPlayerCoin();
+		Integer tCoin = vo.getOnCoin();
+		while (true) {
+			System.out.println("현재 총 베팅금액은 " + vo.getOnCoin() + "원 입니다.");
+			System.out.println("현재 남은 금액은 " + vo.getPlayerCoin() + "원 입니다.");
+			System.out.print("배팅 금액은?(PASS 입력시 Check) >> ");
+			String strBat = scan.nextLine();
+			if (strBat.equals("PASS")) {
+				return vo;
+			}
+			Integer bat = Integer.valueOf(strBat);
+			if (bat > vo.getPlayerCoin()) {
+				System.out.println("베팅금액이 소지금액보다 많습니다. 다시 입력하세요");
+				continue;
+			}
+			vo.setPlayerCoin(pCoin - bat);
+			vo.setOnCoin(bat + tCoin);
+			break;
+		}
+		return vo;
 	}
 
 }
